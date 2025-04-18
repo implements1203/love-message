@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>给你的特别消息❤️</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Comic Sans MS', cursive, sans-serif;
+            background-color: #ffebee;
+            text-align: center;
+            padding: 20px;
+            transition: all 0.5s;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 10;
+        }
+        h1 {
+            color: #e91e63;
+            font-size: clamp(22px, 5vw, 28px);
+            margin: 10px 0;
+        }
+        p {
+            font-size: clamp(16px, 4vw, 18px);
+            color: #555;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        .heart {
+            font-size: clamp(30px, 8vw, 40px);
+            color: #e91e63;
+            animation: beat 1s infinite alternate;
+            display: inline-block;
+            margin: 10px 0;
+        }
+        @keyframes beat {
+            to { transform: scale(1.2); }
+        }
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            font-size: clamp(14px, 4vw, 16px);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            flex: 1;
+            min-width: 120px;
+            max-width: 200px;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        #yesBtn {
+            background-color: #4caf50;
+            color: white;
+        }
+        #noBtn {
+            background-color: #f44336;
+            color: white;
+            position: relative;
+        }
+        #yesBtn:hover, #yesBtn:active {
+            background-color: #388e3c;
+            transform: scale(1.05);
+        }
+        #noBtn:hover, #noBtn:active {
+            background-color: #d32f2f;
+        }
+        .hidden {
+            display: none;
+        }
+        .cat {
+            font-size: clamp(40px, 12vw, 60px);
+            margin: 10px 0;
+        }
+        .fireworks {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+        }
+        /* 响应式巨大爱心 */
+        .giant-heart {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: clamp(100px, 30vw, 200px);
+            color: #e91e63;
+            animation: giantPulse 1.5s ease infinite;
+            pointer-events: none;
+            z-index: 200;
+            text-shadow: 0 0 20px rgba(233, 30, 99, 0.7);
+        }
+        @keyframes giantPulse {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.2); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+        /* 响应式浮动爱心 */
+        .floating-hearts {
+            position: fixed;
+            font-size: clamp(15px, 5vw, 30px);
+            color: #e91e63;
+            animation: float 6s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 150;
+            text-shadow: 0 0 10px rgba(233, 30, 99, 0.7);
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-20px) rotate(5deg); }
+            50% { transform: translateY(0) rotate(0deg); }
+            75% { transform: translateY(-15px) rotate(-5deg); }
+        }
+        /* 移动设备优化 */
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                padding: 15px;
+            }
+            button {
+                padding: 10px 20px;
+                min-width: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="proposal">
+        <div class="cat">🐱</div>
+        <h1>嘿，可爱的你！</h1>
+        <p>我有个非常重要的问题要问你...</p>
+        <p>经过我精密计算（其实就是心跳加速），我们简直是天生一对！</p>
+        <p>你愿意和我一起：<br>
+            - 分享最后一块巧克力<br>
+            - 在雨天共撑一把伞<br>
+            - 互相发送猫咪表情包<br>
+            吗？</p>
+        <div class="heart">❤️</div>
+        <div class="buttons">
+            <button id="yesBtn">当然愿意！</button>
+            <button id="noBtn">拒绝（试试看）</button>
+        </div>
+    </div>
+
+    <div class="container hidden" id="accepted">
+        <div class="cat">😻</div>
+        <h1>太棒啦！</h1>
+        <p>我就知道你会同意的！</p>
+        <p>现在你正式成为我的:<br>
+            <span style="font-size: clamp(18px, 5vw, 24px); color: #e91e63;">❤️ 专属小可爱 ❤️</span></p>
+        <p>准备接收无限量的拥抱和傻笑吧！</p>
+        <div class="heart">❤️</div>
+        <div class="heart">❤️</div>
+        <div class="heart">❤️</div>
+    </div>
+
+    <canvas id="fireworks" class="fireworks hidden"></canvas>
+
+    <script>
+        // 防止移动端双击缩放
+        let lastTouchTime = 0;
+        document.addEventListener('touchend', function(event) {
+            const now = Date.now();
+            if (now - lastTouchTime <= 300) {
+                event.preventDefault();
+            }
+            lastTouchTime = now;
+        }, false);
+
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const proposal = document.getElementById('proposal');
+        const accepted = document.getElementById('accepted');
+        const fireworksCanvas = document.getElementById('fireworks');
+        
+        // 存储浮动元素的引用
+        let floatingElements = [];
+        let isFirstClick = true; // 用于修复拒绝按钮bug
+        
+        // 拒绝按钮的"不可拒绝"逻辑 - 移动端和桌面端兼容
+        function moveButton(button) {
+            const maxX = window.innerWidth - button.offsetWidth;
+            const maxY = window.innerHeight - button.offsetHeight;
+            
+            button.style.position = 'absolute';
+            // 确保按钮不会移出可视区域
+            const newLeft = Math.max(0, Math.min(maxX, Math.random() * maxX));
+            const newTop = Math.max(0, Math.min(maxY, Math.random() * maxY));
+            
+            button.style.left = newLeft + 'px';
+            button.style.top = newTop + 'px';
+            
+            // 改变按钮文本增加趣味性
+            const funTexts = [
+                "哎呀跑掉了",
+                "抓不到我",
+                "再试一次",
+                "选左边那个！",
+                "我不可点",
+                "点不到点不到"
+            ];
+            button.textContent = funTexts[Math.floor(Math.random() * funTexts.length)];
+        }
+
+        // 修复拒绝按钮bug：第一次点击时不会跳出页面
+        noBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (isFirstClick) {
+                isFirstClick = false;
+                moveButton(this);
+            }
+            // 即使点击到了，也会显示提示
+            alert('嘿嘿，这个选项只是个装饰啦！\n你其实只能选择"愿意" ❤️');
+        });
+
+        // 桌面端鼠标悬停
+        noBtn.addEventListener('mouseover', function() {
+            moveButton(this);
+        });
+
+        // 移动端触摸事件
+        noBtn.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            moveButton(this);
+        }, {passive: false});
+        
+        // 接受按钮的逻辑 - 同时处理点击和触摸
+        yesBtn.addEventListener('click', handleAccept);
+        yesBtn.addEventListener('touchend', handleAccept, {passive: true});
+
+        function handleAccept() {
+            proposal.classList.add('hidden');
+            accepted.classList.remove('hidden');
+            fireworksCanvas.classList.remove('hidden');
+            startFireworks();
+            
+            // 改变背景颜色为粉色
+            document.body.style.backgroundColor = '#ffcdd2';
+            
+            // 创建巨大跳动爱心
+            createGiantHeart();
+            
+            // 创建浮动小爱心
+            createFloatingHearts();
+        }
+        
+        // 创建巨大跳动爱心
+        function createGiantHeart() {
+            // 移除之前可能存在的巨大爱心
+            const existingHeart = document.querySelector('.giant-heart');
+            if (existingHeart) {
+                existingHeart.remove();
+            }
+            
+            // 创建巨大爱心元素
+            const giantHeart = document.createElement('div');
+            giantHeart.className = 'giant-heart';
+            giantHeart.innerHTML = '❤️';
+            
+            document.body.appendChild(giantHeart);
+        }
+        
+        // 创建浮动小爱心
+        function createFloatingHearts() {
+            // 先清除之前可能存在的浮动元素
+            floatingElements.forEach(el => {
+                if (el.parentNode) {
+                    el.parentNode.removeChild(el);
+                }
+            });
+            floatingElements = [];
+            
+            // 根据屏幕大小决定爱心数量
+            const heartCount = window.innerWidth < 480 ? 8 : 15;
+            for (let i = 0; i < heartCount; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'floating-hearts';
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * window.innerWidth + 'px';
+                heart.style.top = Math.random() * window.innerHeight + 'px';
+                heart.style.animationDelay = Math.random() * 2 + 's';
+                heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
+                heart.style.opacity = Math.random() * 0.7 + 0.3;
+                
+                document.body.appendChild(heart);
+                floatingElements.push(heart);
+                
+                // 让小爱心缓慢移动
+                animateFloatingElement(heart);
+            }
+        }
+        
+        // 浮动元素动画
+        function animateFloatingElement(el) {
+            let x = parseFloat(el.style.left);
+            let y = parseFloat(el.style.top);
+            let xSpeed = (Math.random() - 0.5) * 0.5;
+            let ySpeed = (Math.random() - 0.5) * 0.5;
+            
+            function move() {
+                x += xSpeed;
+                y += ySpeed;
+                
+                // 边界检测
+                if (x < 0 || x > window.innerWidth) xSpeed *= -1;
+                if (y < 0 || y > window.innerHeight) ySpeed *= -1;
+                
+                el.style.left = x + 'px';
+                el.style.top = y + 'px';
+                
+                requestAnimationFrame(move);
+            }
+            
+            move();
+        }
+        
+        // 烟花效果
+        function startFireworks() {
+            const canvas = fireworksCanvas;
+            const ctx = canvas.getContext('2d');
+            
+            // 根据设备像素比调整画布大小
+            const resizeCanvas = () => {
+                const dpr = window.devicePixelRatio || 1;
+                canvas.width = window.innerWidth * dpr;
+                canvas.height = window.innerHeight * dpr;
+                ctx.scale(dpr, dpr);
+                canvas.style.width = window.innerWidth + 'px';
+                canvas.style.height = window.innerHeight + 'px';
+            };
+            
+            resizeCanvas();
+            
+            // 烟花粒子数组
+            let particles = [];
+            
+            // 创建烟花
+            function createFirework(x, y) {
+                const colors = ['#ff0000', '#ffff00', '#00ff00', '#00ffff', '#0000ff', '#ff00ff'];
+                const particleCount = window.innerWidth < 480 ? 60 : 100;
+                
+                for (let i = 0; i < particleCount; i++) {
+                    const angle = Math.random() * Math.PI * 2;
+                    const speed = Math.random() * 5 + 2;
+                    const size = Math.random() * 3 + 1;
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    const lifetime = Math.random() * 100 + 100;
+                    
+                    particles.push({
+                        x: x,
+                        y: y,
+                        vx: Math.cos(angle) * speed,
+                        vy: Math.sin(angle) * speed,
+                        size: size,
+                        color: color,
+                        lifetime: lifetime,
+                        age: 0
+                    });
+                }
+            }
+            
+            // 动画循环
+            function animate() {
+                // 半透明背景制造拖尾效果
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // 随机添加新烟花
+                if (Math.random() < 0.05) {
+                    createFirework(
+                        Math.random() * window.innerWidth,
+                        Math.random() * window.innerHeight / 2
+                    );
+                }
+                
+                // 更新和绘制粒子
+                for (let i = 0; i < particles.length; i++) {
+                    const p = particles[i];
+                    
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += 0.05; // 重力
+                    p.age++;
+                    
+                    // 绘制粒子
+                    ctx.fillStyle = p.color;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    // 移除旧粒子
+                    if (p.age >= p.lifetime) {
+                        particles.splice(i, 1);
+                        i--;
+                    }
+                }
+                
+                requestAnimationFrame(animate);
+            }
+            
+            // 初始烟花
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    createFirework(
+                        Math.random() * window.innerWidth,
+                        Math.random() * window.innerHeight / 2
+                    );
+                }, i * 300);
+            }
+            
+            animate();
+        }
+        
+        // 窗口大小改变时调整画布和元素位置
+        window.addEventListener('resize', function() {
+            if (!fireworksCanvas.classList.contains('hidden')) {
+                const canvas = fireworksCanvas;
+                const ctx = canvas.getContext('2d');
+                const dpr = window.devicePixelRatio || 1;
+                canvas.width = window.innerWidth * dpr;
+                canvas.height = window.innerHeight * dpr;
+                ctx.scale(dpr, dpr);
+                canvas.style.width = window.innerWidth + 'px';
+                canvas.style.height = window.innerHeight + 'px';
+                
+                // 重新定位浮动元素
+                floatingElements.forEach(el => {
+                    el.style.left = Math.random() * window.innerWidth + 'px';
+                    el.style.top = Math.random() * window.innerHeight + 'px';
+                });
+            }
+        });
+    </script>
+</body>
+</html>
